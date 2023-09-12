@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update person</title>
+</head>
+<body>
+
+
+<center>
+    <h2><b>Страница изменения человека</b></h2>
+    <h3>/people/{id}/edit</h3>
+</center>
+<br/>
+
+<form th:method="POST" th:action="@{/people/{id}(id=${person.getPerson_id()})}" th:object="${person}">
+    <input name="_method" type="hidden" value="patch"/>
+    <label for="name">Введите ФИО:</label>
+    <input name="name" type="text" th:field="*{name}" id="name"/>
+    <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
+    <br/>
+    <label for="age">Введите год рождения</label>
+    <input name="age" type="text" th:field="*{age}" id="age"/>
+    <div style="color: red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</div>
+    <br/>
+
+    <input type="submit" value="Редактировать!"/>
+</form>
+</body>
+</html>

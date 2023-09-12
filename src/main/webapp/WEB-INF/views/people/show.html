@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Информация про одного человека</title>
+</head>
+<body>
+<center><h2>Страница человека</h2></center>
+
+<br/>
+<hr/>
+<br/>
+
+<p th:text="${person.getName()} + ', ' + ${person.getAge()}">VALUE</p>
+
+<!-- IF CUSTOMER IS ANONYMOUS -->
+<div th:if="${list_book}">
+    <hr/>
+    <div><b>Книги:</b></div>
+        <span th:each="list : ${list_book}">
+            <span th:text="${list.getBookName()} + ', ' + ${list.getYear()}"/>
+            <br/>
+        </span>
+</div>
+<!-- ELSE -->
+<div th:unless="${list_book}">
+    <div>Человек пока не взял ни одной книги</div>
+</div>
+
+
+
+<!--<div th:each="list_book : ${list_book}">-->
+<!--    <a href="#" th:text="${list_book.getName()} + ',   ' + ${person.getAge()}">user</a>-->
+<!--</div>-->
+
+<!--</div>-->
+
+<!--<td>-->
+<!--    <span th:if="${list_book != null}">Female</span>-->
+<!--    <span th:unless="${list_book == null}">Male</span>-->
+<!--</td>-->
+
+
+<!--<div th:each="book : ${list_book}">-->
+<!--       Книги:-->
+<!--       th:text="${person.getName()} + ',   ' + ${person.getAge()}">user</a>-->
+<!--</div>-->
+
+
+<br/>
+<hr/>
+<!--<a th:href="@{/people/{id}/edit(id=${person.getPerson_id()})}">Редактировать</a>-->
+
+<form th:method="GET" th:action="@{/people/{id}/edit(id=${person.getPerson_id()})}">
+    <input type="submit" value="Редактировать"/>
+</form>
+<br/>
+<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getPerson_id()})}">
+    <input type="submit" value="Удалить"/>
+</form>
+
+</body>
+</html>
