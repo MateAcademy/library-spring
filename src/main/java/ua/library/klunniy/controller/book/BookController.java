@@ -5,7 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ua.library.klunniy.dao.PeopleDao;
 import ua.library.klunniy.model.Book;
+import ua.library.klunniy.model.Person;
 import ua.library.klunniy.service.BookService;
 import ua.library.klunniy.utils.BookValidator;
 
@@ -16,19 +18,18 @@ import java.util.List;
  * @author Serhii Klunniy
  * /**
  * REST описывает то какие URLы и HTTP методы у нас должны быть для взаимодействия с данными
- *
+ * <p>
  * С GET запросом вот по этому URL мы получим все записи:
- *  1 ----> GET /posts Получаем все записи(READ)
- *
- *  2 ----> GET /posts/:id Получаем одну запись(READ)
- *  3 ----> DELETE /posts/:id Удаляем запись(DELETE)
- *
- *  4 -----> GET /posts/new HTML форма создания записи
- *  5 -----> POST /posts Создаем новую запись(CREATE)
- *
- *  6 -----> GET /posts/:id/edit HTML форма редактирования записи
- *  7 -----> PATCH /posts/:id Обновляем запись(UPDATE)
- *
+ * 1 ----> GET /posts Получаем все записи(READ)
+ * <p>
+ * 2 ----> GET /posts/:id Получаем одну запись(READ)
+ * 3 ----> DELETE /posts/:id Удаляем запись(DELETE)
+ * <p>
+ * 4 -----> GET /posts/new HTML форма создания записи
+ * 5 -----> POST /posts Создаем новую запись(CREATE)
+ * <p>
+ * 6 -----> GET /posts/:id/edit HTML форма редактирования записи
+ * 7 -----> PATCH /posts/:id Обновляем запись(UPDATE)
  */
 @Controller
 @RequestMapping("/books")
@@ -38,10 +39,13 @@ public class BookController {
 
     private final BookValidator bookValidator;
 
+    private final PeopleDao personDao;
+
     @Autowired
-    public BookController(BookService bookService, BookValidator bookValidator) {
+    public BookController(BookService bookService, BookValidator bookValidator, PeopleDao personDao) {
         this.bookService = bookService;
         this.bookValidator = bookValidator;
+        this.personDao = personDao;
     }
 
     //при обращении на адрес: /admin/book я должен получить список из данных:
@@ -62,13 +66,42 @@ public class BookController {
 //GET /people/:id  - показываем страницу одного человека
 // 2
     @GetMapping("/{id}")
-    public String show(@PathVariable(value = "id", required = false) long id, Model model) {
+    public String show(@PathVariable(value = "id", required = false) long id, Model model,
+                       @ModelAttribute("person") Person person) {
 //Получим одного человека из DAO и передадим на отображение в представление
 //необходимо реализовать шаблон - он будет отображать одного человека
-        model.addAttribute("book", bookService.show(id));
 
+        Book show = bookService.show(id);
+        model.addAttribute("book", show);
+        List<Person> index = personDao.index();
+        model.addAttribute("people", index);
+
+        Long personId = show.getPersonId();
+        if (personId != null) {
+            model.addAttribute("personId", personId);
+            model.addAttribute("list_book", personDao.show(personId));
+        }
 
         return "book/show";
+    }
+
+    @PostMapping("/dellBook/{id}")
+    public String dellAdmin(@PathVariable(value = "id", required = false) long id) {
+        Book book = bookService.show(id);
+        book.setPersonId(null);
+        bookService.update(id, book);
+
+        System.out.println("bookId=" + id);
+        return "redirect:/books/{id}";
+    }
+
+    @PatchMapping("/addBook/{id}")
+    public String makeAdmin(@ModelAttribute("person") Person person, @PathVariable(value = "id", required = false) long id) {
+        Book book = bookService.show(id);
+        book.setPersonId(person.getPerson_id());
+
+        bookService.update(id, book);
+        return "redirect:/books/{id}";
     }
 
 //GET /people/new  - будет в браузере отображется HTML форма для добавления одного человека / создания записи
@@ -99,7 +132,7 @@ public class BookController {
         return "redirect:/books";
     }
 
-/*------ NEW ----------------------------------------------------------------------------------------------*/
+    /*------ NEW ----------------------------------------------------------------------------------------------*/
     // 4 HTML форма создания записи
     @GetMapping("/new")
     public String newInfo(@ModelAttribute("book") Book book) {
@@ -117,7 +150,7 @@ public class BookController {
         return "redirect:/books";
     }
 
-/*--------------DELETE---------------------------------------------------------------------*/
+    /*--------------DELETE---------------------------------------------------------------------*/
 
     // 3
     @DeleteMapping("/{id}")

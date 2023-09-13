@@ -64,11 +64,11 @@ public class PeopleController {
     public String show(@PathVariable(value = "id", required = false) long id, Model model) {
 
         Person person = peopleService.show(id);
+        model.addAttribute("person", person);
 
         List<Book> listBookForPerson = bookService.listShow(person.getPerson_id());
         person.setBookList(listBookForPerson);
 
-        model.addAttribute("person", person);
         if (!listBookForPerson.isEmpty())
             model.addAttribute("list_book", listBookForPerson);
 

@@ -24,15 +24,17 @@ public class AdminController {
         this.personDao = personDao;
     }
 
+    //будет выдавать страницу с выпадающим списком
     @GetMapping()
     public String adminPage(Model model, @ModelAttribute("person") Person person) {
         model.addAttribute("people", personDao.index());
         return "people/adminPage";
     }
 
-    //todo
+    //будет принимать данные с выпадающего списка и отображать их в консоли
     @PatchMapping("/add")
     public String makeAdmin(@ModelAttribute("person") Person person) {
+        //через дао в базу данных можем обратиться
         System.out.println(person.getPerson_id());
         System.out.println(person.getName());
         return "redirect:/people";

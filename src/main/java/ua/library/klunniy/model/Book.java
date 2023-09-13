@@ -20,9 +20,9 @@ import javax.validation.constraints.Size;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Book {
 
-    long bookId;
+    Long bookId;
 
-    long personId;
+    Long personId;
 
     @NotEmpty(message = "Name should not be empty")
     @Size(min = 2, max = 20, message = "Name should be between 2 and 20 characters")
