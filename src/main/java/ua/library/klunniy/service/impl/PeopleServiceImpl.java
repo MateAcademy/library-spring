@@ -16,10 +16,6 @@ public class PeopleServiceImpl implements PeopleService {
 
     @Autowired
     private PeopleDao peopleDao;
-//= PeopleDaoFactory.getPeopleDao();
-//    @Autowired
-//    private PeopleDao peopleDao;
-
 
     @Override
     public List<Person> getPeople() {
@@ -45,4 +41,5 @@ public class PeopleServiceImpl implements PeopleService {
     public void delete(long id) {
         peopleDao.delete(id);
     }
+
 }

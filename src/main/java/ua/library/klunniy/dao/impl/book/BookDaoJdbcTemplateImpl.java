@@ -55,8 +55,8 @@ public class BookDaoJdbcTemplateImpl implements BookDao {
 
     @Override
     public void update(long id, Book book) {
-        jdbcTemplate.update("UPDATE book SET person_id = ?, book_name = ?, author = ?, year = ? WHERE book_id = ?", book.getPersonId(), book.getBookName(),
-                book.getAuthor(), book.getYear(), id);
+        jdbcTemplate.update("UPDATE book SET person_id = ?, book_name = ?, author = ?, year = ? WHERE book_id = ?",
+                book.getPersonId(), book.getBookName(), book.getAuthor(), book.getYear(), id);
     }
 
     @Override

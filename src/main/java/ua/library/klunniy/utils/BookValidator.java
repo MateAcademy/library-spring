@@ -33,4 +33,5 @@ public class BookValidator implements Validator {
             errors.rejectValue("name", "", "This name is already taken");
         }
     }
+
 }

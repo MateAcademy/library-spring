@@ -9,7 +9,6 @@ import ua.library.klunniy.model.Book;
 import ua.library.klunniy.model.Person;
 import ua.library.klunniy.service.BookService;
 import ua.library.klunniy.service.PeopleService;
-import ua.library.klunniy.utils.BookValidator;
 import ua.library.klunniy.utils.PersonValidator;
 
 import javax.validation.Valid;
@@ -27,8 +26,6 @@ public class PeopleController {
 
     private final BookService bookService;
 
-    //   private final BookValidator bookValidator;
-
     @Autowired
     public PeopleController(PeopleService peopleService, PersonValidator personValidator, BookService bookService) {
         this.peopleService = peopleService;
@@ -36,7 +33,6 @@ public class PeopleController {
         this.bookService = bookService;
     }
 
-    //страница всех людей
     @GetMapping()
     public String index(Model model) {
         List<Person> people = peopleService.getPeople();
@@ -48,7 +44,6 @@ public class PeopleController {
         return "people/people";
     }
 
-    //страница добавления человека
     @PostMapping
     public String create(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult) {
         personValidator.validate(person, bindingResult);
@@ -59,7 +54,6 @@ public class PeopleController {
         return "redirect:/people";
     }
 
-    //перехожу со страницы всех людей по ссылке на страницу одного человека
     @GetMapping("/{id}")
     public String show(@PathVariable(value = "id", required = false) long id, Model model) {
 
@@ -75,7 +69,6 @@ public class PeopleController {
         return "people/show";
     }
 
-    //страница изменения человека
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") long id, Model model) {
         model.addAttribute("person", peopleService.show(id));
@@ -91,7 +84,6 @@ public class PeopleController {
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
                          @PathVariable("id") long id) {
-        //       personValidator.validate(person, bindingResult);
         if (bindingResult.hasErrors()) {
             return "people/edit";
         }

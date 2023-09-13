@@ -14,23 +14,6 @@ import ua.library.klunniy.utils.BookValidator;
 import javax.validation.Valid;
 import java.util.List;
 
-/**
- * @author Serhii Klunniy
- * /**
- * REST описывает то какие URLы и HTTP методы у нас должны быть для взаимодействия с данными
- * <p>
- * С GET запросом вот по этому URL мы получим все записи:
- * 1 ----> GET /posts Получаем все записи(READ)
- * <p>
- * 2 ----> GET /posts/:id Получаем одну запись(READ)
- * 3 ----> DELETE /posts/:id Удаляем запись(DELETE)
- * <p>
- * 4 -----> GET /posts/new HTML форма создания записи
- * 5 -----> POST /posts Создаем новую запись(CREATE)
- * <p>
- * 6 -----> GET /posts/:id/edit HTML форма редактирования записи
- * 7 -----> PATCH /posts/:id Обновляем запись(UPDATE)
- */
 @Controller
 @RequestMapping("/books")
 public class BookController {
@@ -48,29 +31,16 @@ public class BookController {
         this.personDao = personDao;
     }
 
-    //при обращении на адрес: /admin/book я должен получить список из данных:
-    //Получим всех (людей/информацию) из DAO и передам на отображение в представление
-//GET /people  - показываем список из всех людей
-
-    // 1
     @GetMapping
     public String index(Model model) {
-        //fined books.html in DB
         List<Book> index = bookService.index();
         model.addAttribute("book", index);
-//необходимо реализовать шаблон - он будет отображать список из книг
         return "book/books";
     }
 
-    //при обращении на адрес: /admin/book/:id я должен получить конкретное какое-то данное:
-//GET /people/:id  - показываем страницу одного человека
-// 2
     @GetMapping("/{id}")
     public String show(@PathVariable(value = "id", required = false) long id, Model model,
                        @ModelAttribute("person") Person person) {
-//Получим одного человека из DAO и передадим на отображение в представление
-//необходимо реализовать шаблон - он будет отображать одного человека
-
         Book show = bookService.show(id);
         model.addAttribute("book", show);
         List<Person> index = personDao.index();
@@ -81,7 +51,6 @@ public class BookController {
             model.addAttribute("personId", personId);
             model.addAttribute("list_book", personDao.show(personId));
         }
-
         return "book/show";
     }
 
@@ -90,8 +59,6 @@ public class BookController {
         Book book = bookService.show(id);
         book.setPersonId(null);
         bookService.update(id, book);
-
-        System.out.println("bookId=" + id);
         return "redirect:/books/{id}";
     }
 
@@ -99,22 +66,10 @@ public class BookController {
     public String makeAdmin(@ModelAttribute("person") Person person, @PathVariable(value = "id", required = false) long id) {
         Book book = bookService.show(id);
         book.setPersonId(person.getPerson_id());
-
         bookService.update(id, book);
         return "redirect:/books/{id}";
     }
 
-//GET /people/new  - будет в браузере отображется HTML форма для добавления одного человека / создания записи
-//пишу контроллер который будет отдавать форму / шаблон для создания одного человека
-//метод для получения новой информации / html форма для новой информации
-//    @GetMapping("/new")
-//    public String newInfo(Model model) {
-//        model.addAttribute("book", new Info());
-//        return "book/new";
-//    }
-
-    // 6, создаю форму для редактирования, этот метод будет возвращать HTML страницу для обновления /
-// редактирования человека:
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") long id, Model model) {
         model.addAttribute("book", bookService.show(id));
@@ -132,8 +87,6 @@ public class BookController {
         return "redirect:/books";
     }
 
-    /*------ NEW ----------------------------------------------------------------------------------------------*/
-    // 4 HTML форма создания записи
     @GetMapping("/new")
     public String newInfo(@ModelAttribute("book") Book book) {
         return "book/new";
@@ -145,34 +98,14 @@ public class BookController {
         if (bindingResult.hasErrors()) {
             return "/books/new";
         }
-
         bookService.save(book);
         return "redirect:/books";
     }
 
-    /*--------------DELETE---------------------------------------------------------------------*/
-
-    // 3
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         bookService.delete(id);
         return "redirect:/books";
     }
-
-
-//    @PostMapping()
-//    public String create(@RequestParam(value = "name", required = false) String name,
-//                       @RequestParam(value = "text", required = false) String text,
-//                       @RequestParam(value = "description", required = false) String description,
-//                       Model model) {
-//
-//        Info book = new Info(name, text, description);
-////добавляю инфо в бд
-//        infoService.save(book);
-//        return "redirect:/admin/book";
-//    }
-
-    //POST /people Будет добавляться один новый человек / Создаем новую запись(CREATE)
-// 5
 
 }

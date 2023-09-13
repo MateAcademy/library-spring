@@ -32,8 +32,6 @@ public class Book {
     @Size(min = 2, max = 20, message = "Name should be between 2 and 20 characters")
     String author;
 
-//    @NotEmpty(message = "Year should not be empty")
-//    @Size(min = 0, max = 2025, message = "Year should be between 0 and 2025")
     @Min(value = 0, message = "Year should be greater than 0")
     @Max(value = 2025, message = "Year should be less than 2025")
     int year;

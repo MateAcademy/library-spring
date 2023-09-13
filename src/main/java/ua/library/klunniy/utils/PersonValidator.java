@@ -32,4 +32,5 @@ public class PersonValidator implements Validator {
             errors.rejectValue("name", "", "This name is already taken");
         }
     }
+
 }

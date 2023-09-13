@@ -9,7 +9,6 @@ import java.util.Optional;
  * @author Serhii Klunniy
  */
 public interface BookService {
-
     List<Book> index();
 
     Book show(long id);

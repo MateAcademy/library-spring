@@ -1,7 +1,6 @@
 package ua.library.klunniy.dao.impl.people;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -21,23 +20,11 @@ public class PeopleDaoJdbcTemplateImpl implements PeopleDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    /**
-     * @RowMapper - это такой обьект который отображает строки из таблицы в нашу сущность
-     */
-
-//todo почему дублируется
-    //SELECT * FROM person p left join book b on p.person_id = b.person_id ORDER BY p.person_id
     @Override
     public List<Person> index() {
         return jdbcTemplate.query("SELECT * FROM person ORDER BY person_id",
                 new PersonMapper());
     }
-
-//    @Override
-//    public Person show(long id) {
-//        return jdbcTemplate.query("SELECT * FROM person p left join book b on p.person_id = b.person_id WHERE p.person_id=?", new Object[]{id}, new BeanPropertyRowMapper<>(Person.class))
-//                .stream().findAny().orElse(null);
-//    }
 
     @Override
     public Person show(long id) {
@@ -47,8 +34,8 @@ public class PeopleDaoJdbcTemplateImpl implements PeopleDao {
 
     @Override
     public Optional<Person> show(String name) {
-        return jdbcTemplate.query("SELECT * FROM person WHERE name=?", new Object[]{name}, new BeanPropertyRowMapper<>(Person.class))
-                .stream().findAny();
+        return jdbcTemplate.query("SELECT * FROM person WHERE name=?", new Object[]{name},
+                        new BeanPropertyRowMapper<>(Person.class)).stream().findAny();
     }
 
     @Override
@@ -58,7 +45,8 @@ public class PeopleDaoJdbcTemplateImpl implements PeopleDao {
 
     @Override
     public void update(long id, Person person) {
-        jdbcTemplate.update("UPDATE person SET name=?, age=? WHERE person_id=?", person.getName(), person.getAge(), id);
+        jdbcTemplate.update("UPDATE person SET name=?, age=? WHERE person_id=?", person.getName(),
+                person.getAge(), id);
     }
 
     @Override
