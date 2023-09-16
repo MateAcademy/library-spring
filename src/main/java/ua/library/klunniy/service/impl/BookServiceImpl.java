@@ -2,6 +2,7 @@ package ua.library.klunniy.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ua.library.klunniy.dao.BookDao;
 import ua.library.klunniy.model.Book;
 import ua.library.klunniy.service.BookService;
@@ -12,10 +13,10 @@ import java.util.Optional;
 /**
  * @author Serhii Klunniy
  */
-@Component
+@Service
 public class BookServiceImpl implements BookService {
 
-    private BookDao bookDao;
+    private final BookDao bookDao;
 
     @Autowired
     public BookServiceImpl(BookDao bookDao) {

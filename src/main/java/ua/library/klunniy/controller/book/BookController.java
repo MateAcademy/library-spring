@@ -5,30 +5,30 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ua.library.klunniy.dao.PeopleDao;
 import ua.library.klunniy.model.Book;
 import ua.library.klunniy.model.Person;
 import ua.library.klunniy.service.BookService;
+import ua.library.klunniy.service.PeopleService;
 import ua.library.klunniy.utils.BookValidator;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("/books")
+@RequestMapping("books")
 public class BookController {
 
     private final BookService bookService;
 
     private final BookValidator bookValidator;
 
-    private final PeopleDao personDao;
+    private final PeopleService peopleService;
 
     @Autowired
-    public BookController(BookService bookService, BookValidator bookValidator, PeopleDao personDao) {
+    public BookController(BookService bookService, BookValidator bookValidator, PeopleService peopleService) {
         this.bookService = bookService;
         this.bookValidator = bookValidator;
-        this.personDao = personDao;
+        this.peopleService = peopleService;
     }
 
     @GetMapping
@@ -43,13 +43,13 @@ public class BookController {
                        @ModelAttribute("person") Person person) {
         Book show = bookService.show(id);
         model.addAttribute("book", show);
-        List<Person> index = personDao.index();
+        List<Person> index = peopleService.index();
         model.addAttribute("people", index);
 
         Long personId = show.getPersonId();
         if (personId != null) {
             model.addAttribute("personId", personId);
-            model.addAttribute("list_book", personDao.show(personId));
+            model.addAttribute("list_book", peopleService.show(personId));
         }
         return "book/show";
     }

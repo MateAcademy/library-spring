@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface PeopleService {
 
-    List<Person> getPeople();
+    List<Person> index();
 
     Person show(long id);
 

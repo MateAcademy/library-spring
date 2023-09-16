@@ -18,7 +18,7 @@ import java.util.List;
  * @author Serhii Klunniy
  */
 @Controller
-@RequestMapping("/people")
+@RequestMapping("people")
 public class PeopleController {
 
     private final PeopleService peopleService;
@@ -35,7 +35,7 @@ public class PeopleController {
 
     @GetMapping()
     public String index(Model model) {
-        List<Person> people = peopleService.getPeople();
+        List<Person> people = peopleService.index();
         for (Person p : people) {
             List<Book> listBookForPerson = bookService.listShow(p.getPerson_id());
             p.setBookList(listBookForPerson);

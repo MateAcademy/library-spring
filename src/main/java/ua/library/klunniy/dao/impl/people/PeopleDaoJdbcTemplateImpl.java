@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ua.library.klunniy.dao.PeopleDao;
 import ua.library.klunniy.dao.mapper.PersonMapper;
 import ua.library.klunniy.model.Person;
@@ -14,7 +15,7 @@ import java.util.Optional;
 /**
  * @author Serhii Klunniy
  */
-@Component
+@Repository
 public class PeopleDaoJdbcTemplateImpl implements PeopleDao {
 
     @Autowired

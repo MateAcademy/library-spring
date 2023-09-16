@@ -3,6 +3,7 @@ package ua.library.klunniy.dao.impl.book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ua.library.klunniy.dao.BookDao;
 import ua.library.klunniy.dao.mapper.BookMapper;
 import ua.library.klunniy.model.Book;
@@ -13,7 +14,7 @@ import java.util.Optional;
 /**
  * @author Serhii Klunniy
  */
-@Component
+@Repository
 public class BookDaoJdbcTemplateImpl implements BookDao {
 
     private JdbcTemplate jdbcTemplate;
