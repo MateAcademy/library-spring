@@ -3,6 +3,7 @@ package ua.library.klunniy.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ua.library.klunniy.model.Person;
 import ua.library.klunniy.repositories.BookRepository;
 import ua.library.klunniy.model.Book;
 
@@ -32,10 +33,11 @@ public class BookService {
         return foundBook.orElse(null);
     }
 
-//    public List<Book> listShow(int personId) {
-//        return bookRepository.findByOwnerPerson_id(personId);
-//    }
-//
+    public List<Book> listShow(Person person) {
+        return bookRepository.findAllByOwner(person);
+    }
+
+    //
 //    public Book findOne(String name) {
 //        return bookRepository.findByBookName(name);
 //    }
@@ -54,6 +56,10 @@ public class BookService {
     @Transactional
     public void delete(int id) {
         bookRepository.deleteById(id);
+    }
+
+    public List<Book> findAllByOwner(Person person) {
+        return bookRepository.findAllByOwner(person);
     }
 
 }

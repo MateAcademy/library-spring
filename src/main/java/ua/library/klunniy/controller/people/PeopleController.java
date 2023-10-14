@@ -61,11 +61,11 @@ public class PeopleController {
         Person person = peopleService.findOne(id);
         model.addAttribute("person", person);
 
-//        List<Book> listBookForPerson = bookService.f(person.getPerson_id());
-//        person.setBookList(listBookForPerson);
-//
-//        if (!listBookForPerson.isEmpty())
-//            model.addAttribute("list_book", listBookForPerson);
+        List<Book> listBookForPerson = bookService.findAllByOwner(person);
+        person.setBookList(listBookForPerson);
+
+        if (!listBookForPerson.isEmpty())
+            model.addAttribute("list_book", listBookForPerson);
 
         return "people/show";
     }

@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
-//    List<Book> findByOwnerPerson_id(int personId);
+    List<Book> findAllByOwner(Person person);
 //
 //    @Query("select b from Book b where b.bookName = ?1")
 //    Book findByBookName(String name);
