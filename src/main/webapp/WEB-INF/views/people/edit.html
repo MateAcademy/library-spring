@@ -12,7 +12,7 @@
 </center>
 <br/>
 
-<form th:method="POST" th:action="@{/people/{id}(id=${person.getPerson_id()})}" th:object="${person}">
+<form th:method="POST" th:action="@{/people/{id}(id=${person.getPersonId()})}" th:object="${person}">
     <input name="_method" type="hidden" value="patch"/>
     <label for="name">Введите ФИО:</label>
     <input name="name" type="text" th:field="*{name}" id="name"/>

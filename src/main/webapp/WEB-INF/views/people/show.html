@@ -51,11 +51,11 @@
 <hr/>
 <!--<a th:href="@{/people/{id}/edit(id=${person.getPerson_id()})}">Редактировать</a>-->
 
-<form th:method="GET" th:action="@{/people/{id}/edit(id=${person.getPerson_id()})}">
+<form th:method="GET" th:action="@{/people/{id}/edit(id=${person.getPersonId()})}">
     <input type="submit" value="Редактировать"/>
 </form>
 <br/>
-<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getPerson_id()})}">
+<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getPersonId()})}">
     <input type="submit" value="Удалить"/>
 </form>
 

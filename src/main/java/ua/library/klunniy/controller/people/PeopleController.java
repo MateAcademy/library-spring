@@ -9,6 +9,7 @@ import ua.library.klunniy.model.Book;
 import ua.library.klunniy.model.Person;
 //import ua.library.klunniy.service.BookService;
 
+import ua.library.klunniy.service.impl.BookService;
 import ua.library.klunniy.service.impl.PeopleService;
 //import ua.library.klunniy.utils.PersonValidator;
 
@@ -23,14 +24,14 @@ import java.util.List;
 public class PeopleController {
 
     private final PeopleService peopleService;
+    private final BookService bookService;
 //    private final PersonValidator personValidator;
-
- //   private final BookService bookService;
+//    private final BookService bookService;
 
     @Autowired
-    public PeopleController(PeopleService peopleService) {
+    public PeopleController(PeopleService peopleService, BookService bookService) {
         this.peopleService = peopleService;
-     ;
+        this.bookService = bookService;
     }
 
     @GetMapping()
@@ -60,7 +61,7 @@ public class PeopleController {
         Person person = peopleService.findOne(id);
         model.addAttribute("person", person);
 
-//        List<Book> listBookForPerson = bookService.listShow(person.getPerson_id());
+//        List<Book> listBookForPerson = bookService.f(person.getPerson_id());
 //        person.setBookList(listBookForPerson);
 //
 //        if (!listBookForPerson.isEmpty())
@@ -83,7 +84,7 @@ public class PeopleController {
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
-                         @PathVariable("id") long id) {
+                         @PathVariable("id") int id) {
         if (bindingResult.hasErrors()) {
             return "people/edit";
         }

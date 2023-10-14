@@ -2,6 +2,7 @@ package ua.library.klunniy.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.library.klunniy.model.Person;
 import ua.library.klunniy.repositories.PeopleRepository;
 
@@ -12,9 +13,9 @@ import java.util.Optional;
  * @author Serhii Klunniy
  */
 @Service
-//@Transactional
+@Transactional(readOnly = true)
 //@RequiredArgsConstructor
-public class PeopleService  {
+public class PeopleService {
 
     private final PeopleRepository peopleRepository;
 
@@ -23,39 +24,33 @@ public class PeopleService  {
         this.peopleRepository = peopleRepository;
     }
 
-
     public List<Person> findAll() {
-      return   peopleRepository.findAll();
- //       return peopleDao.index();
+        return peopleRepository.findAll();
+        //       return peopleDao.index();
 //        return peopleRepositoryJPA.findAll();
     }
-
 
     public Person findOne(int id) {
         Optional<Person> foundPerson = peopleRepository.findById(id);
         return foundPerson.orElse(null);
 //        return peopleDao.show(id);
- //       return peopleRepositoryJPA.findById(id).get();
+        //       return peopleRepositoryJPA.findById(id).get();
     }
 
-
+    @Transactional
     public void save(Person person) {
-//        peopleDao.save(person);
-//        peopleRepositoryJPA.save(person);
         peopleRepository.save(person);
     }
 
-
-    public void update(long id, Person person) {
- //       peopleDao.update(id, person);
- //       peopleRepositoryJPA.save(person);
-//        peopleRepositoryCRUD.s(id, person);
+    @Transactional
+    public void update(int id, Person updatePerson) {
+        updatePerson.setPersonId(id);
+        peopleRepository.save(updatePerson);
     }
 
-
-    public void delete(long id) {
- //       peopleDao.delete(id);
-//        peopleRepositoryJPA.deleteById(id);
+    @Transactional
+    public void delete(int id) {
+        peopleRepository.deleteById(id);
     }
 
 }

@@ -24,7 +24,7 @@ public class Person {
     @Id
     @Column(name = "person_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer person_id;
+    Integer personId;
 
     @OneToMany(mappedBy = "owner")
     List<Book> bookList;
@@ -37,7 +37,23 @@ public class Person {
     @Max(value = 2025, message = "Age should be less than 2025")
     int age;
 
+    public Person() {
+    }
+
     public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public Person(List<Book> bookList, String name, int age) {
+        this.bookList = bookList;
+        this.name = name;
+        this.age = age;
+    }
+
+    public Person(Integer personId, List<Book> bookList, String name, int age) {
+        this.personId = personId;
+        this.bookList = bookList;
         this.name = name;
         this.age = age;
     }
@@ -54,13 +70,12 @@ public class Person {
             }
         }
     }
-
-    public Integer getPerson_id() {
-        return person_id;
+    public Integer getPersonId() {
+        return personId;
     }
 
-    public void setPerson_id(Integer person_id) {
-        this.person_id = person_id;
+    public void setPersonId(Integer personId) {
+        this.personId = personId;
     }
 
     public List<Book> getBookList() {
@@ -87,20 +102,7 @@ public class Person {
         this.age = age;
     }
 
-    public Person(List<Book> bookList, String name, int age) {
-        this.bookList = bookList;
-        this.name = name;
-        this.age = age;
-    }
 
-    public Person(Integer person_id, List<Book> bookList, String name, int age) {
-        this.person_id = person_id;
-        this.bookList = bookList;
-        this.name = name;
-        this.age = age;
-    }
 
-    public Person() {
-    }
 
 }

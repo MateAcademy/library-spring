@@ -32,10 +32,10 @@
 <div th:unless="${personId}">
     <div>Эта книга свободна, кому назначить ее?</div>
     <br/>
-    <form th:method="PATCH" th:action="@{/books/addBook/{id}(id=${book.getBookId()})}"  th:object="${book}">
+    <form th:method="PATCH" th:action="@{/books/addBook/{id}(id=${book.getBookId()})}" th:object="${book}">
         <label for="person">Выберите человека:</label>
-        <select th:object="${person}" th:field="*{person_id}" id="person">
-            <option th:each="person : ${people}" th:value="${person.getPerson_id()}"
+        <select th:object="${person}" th:field="*{personId}" id="person">
+            <option th:each="person : ${people}" th:value="${person.getPersonId()}"
                     th:text="${person.getName()}"></option>
         </select>
         <input type="submit" value="Назначить книгу"/>

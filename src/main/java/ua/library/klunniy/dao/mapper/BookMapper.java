@@ -13,7 +13,7 @@
 //    @Override
 //    public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
 //        Book book = new Book();
-//        book.setBookId(rs.getLong("book_id"));
+//        book.setBook_id(rs.getLong("book_id"));
 //        book.setPersonId(rs.getLong("person_id"));
 //        book.setBookName(rs.getString("book_name"));
 //        book.setAuthor(rs.getString("author"));

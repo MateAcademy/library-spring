@@ -11,7 +11,8 @@
     <h3>/books</h3>
 
     <div th:each="information : ${book}">
-        <a th:href="@{/books/{id}(id=${information.getBookId()})}" th:text="${information.getBookName()}"></a>
+        <a th:href="@{/books/{id}(id=${information.getBookId()})}"
+           th:text="${information.getBookName()}"></a>
     </div>
 
     <br/>

@@ -26,23 +26,29 @@ public class Book {
     @Id
     @Column(name = "book_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long bookId;
+    Integer bookId;
 
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
     Person owner;
 
     @NotEmpty(message = "Name should not be empty")
-    @Size(min = 2, max = 20, message = "Name should be between 2 and 20 characters")
+    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
+    @Column(name = "name")
     String bookName;
 
     @NotEmpty(message = "Name should not be empty")
-    @Size(min = 2, max = 20, message = "Name should be between 2 and 20 characters")
+    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
+    @Column(name = "author")
     String author;
 
     @Min(value = 0, message = "Year should be greater than 0")
     @Max(value = 2025, message = "Year should be less than 2025")
+    @Column(name = "year")
     int year;
+
+    public Book() {
+    }
 
     public Book(String name, String author, int year) {
         this.bookName = name;
@@ -50,11 +56,26 @@ public class Book {
         this.year = year;
     }
 
-    public Long getBookId() {
+    public Book(Person owner, String bookName, String author, int year) {
+        this.owner = owner;
+        this.bookName = bookName;
+        this.author = author;
+        this.year = year;
+    }
+
+    public Book(int bookId, Person owner, String bookName, String author, int year) {
+        this.bookId = bookId;
+        this.owner = owner;
+        this.bookName = bookName;
+        this.author = author;
+        this.year = year;
+    }
+
+    public Integer getBookId() {
         return bookId;
     }
 
-    public void setBookId(Long bookId) {
+    public void setBookId(Integer bookId) {
         this.bookId = bookId;
     }
 
@@ -88,23 +109,5 @@ public class Book {
 
     public void setYear(int year) {
         this.year = year;
-    }
-
-    public Book(Person owner, String bookName, String author, int year) {
-        this.owner = owner;
-        this.bookName = bookName;
-        this.author = author;
-        this.year = year;
-    }
-
-    public Book(Long bookId, Person owner, String bookName, String author, int year) {
-        this.bookId = bookId;
-        this.owner = owner;
-        this.bookName = bookName;
-        this.author = author;
-        this.year = year;
-    }
-
-    public Book() {
     }
 }

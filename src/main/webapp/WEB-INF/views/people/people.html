@@ -13,7 +13,7 @@
     <br/>
     <br/>
     <div th:each="person : ${person}">
-        <a th:href="@{/people/{id}(id=${person.getPerson_id()})}"
+        <a th:href="@{/people/{id}(id=${person.getPersonId()})}"
            th:text="${person.getName()} + ',   ' + ${person.getAge()}">user</a>
     </div>
 
