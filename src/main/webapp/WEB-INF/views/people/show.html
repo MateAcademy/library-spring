@@ -17,8 +17,8 @@
 <div th:if="${list_book}">
     <hr/>
     <div><b>Книги:</b></div>
-        <span th:each="list : ${list_book}">
-            <span th:text="${list.getBookName()} + ', ' + ${list.getYear()}"/>
+        <span th:each="book : ${list_book}">
+            <span th:text="${book.getBookName()} + ', ' + ${book.getAuthor()} +', ' + ${book.getYear()}"/>
             <br/>
         </span>
 </div>

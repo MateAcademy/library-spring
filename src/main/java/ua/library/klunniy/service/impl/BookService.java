@@ -1,6 +1,8 @@
 package ua.library.klunniy.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.library.klunniy.model.Person;
@@ -27,6 +29,24 @@ public class BookService {
     public List<Book> findAll() {
         return bookRepository.findAll();
     }
+
+    public List<Book> findAll(int page, int size) {
+        return bookRepository.findAll(PageRequest.of(page, size)).getContent();
+    }
+
+    public List<Book> findAll(String year) {
+        return bookRepository.findAll(Sort.by(year));
+    }
+
+    public List<Book> findAll(int page, int size, String year) {
+        return bookRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, year))).getContent();
+    }
+
+    public List<Book> findByBookNameStartingWith(String name) {
+        return bookRepository.findByBookNameStartingWith(name);
+    }
+
+
 
     public Book findOne(int id) {
         Optional<Book> foundBook = bookRepository.findById(id);

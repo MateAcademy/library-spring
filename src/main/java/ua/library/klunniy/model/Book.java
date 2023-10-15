@@ -50,6 +50,7 @@ public class Book {
     public Book() {
     }
 
+
     public Book(String name, String author, int year) {
         this.bookName = name;
         this.author = author;
@@ -110,4 +111,5 @@ public class Book {
     public void setYear(int year) {
         this.year = year;
     }
+
 }

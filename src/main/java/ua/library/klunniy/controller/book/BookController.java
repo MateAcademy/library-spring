@@ -5,11 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ua.library.klunniy.dto.BookDTO;
 import ua.library.klunniy.model.Book;
 import ua.library.klunniy.model.Person;
 
 import ua.library.klunniy.service.impl.BookService;
 import ua.library.klunniy.service.impl.PeopleService;
+import ua.library.klunniy.utils.BookDTOList;
 //import ua.library.klunniy.utils.BookValidator;
 
 import javax.validation.Valid;
@@ -24,19 +26,54 @@ public class BookController {
 //  private final BookValidator bookValidator;
 //  private final PeopleService peopleService;
 
+    private final BookDTOList bookDTOList;
+
     @Autowired
-    public BookController(BookService bookService, PeopleService peopleService) {
+    public BookController(BookService bookService, PeopleService peopleService, BookDTOList bookDTOList) {
         this.bookService = bookService;
 //        this.bookValidator = bookValidator;
 //        this.peopleService = peopleService;
         this.peopleService = peopleService;
+        this.bookDTOList = bookDTOList;
     }
 
-    @GetMapping
-    public String index(Model model) {
-        List<Book> index = bookService.findAll();
-        model.addAttribute("book", index);
+    @GetMapping()
+    public String index(Model model, @RequestParam(value = "page", required = false) Integer page,
+                        @RequestParam(value = "books_per_page", required = false) Integer books_per_page,
+                        @RequestParam(value = "sort_by_year", required = false) String sort_by_year) {
+        if (page != null && books_per_page != null && Boolean.parseBoolean(sort_by_year)) {
+            model.addAttribute("book", bookService.findAll(page, books_per_page, "year"));
+        } else if (page != null && books_per_page != null) {
+            model.addAttribute("book", bookService.findAll(page, books_per_page));
+        } else if (Boolean.parseBoolean(sort_by_year)) {
+            model.addAttribute("book", bookService.findAll("year"));
+        } else {
+            model.addAttribute("book", bookService.findAll());
+        }
         return "book/books";
+    }
+
+    @GetMapping("/search")
+    public String search(@ModelAttribute("book") Book book) {
+        return "book/search";
+    }
+
+    @PostMapping("/search")
+    public String search2(@ModelAttribute("book") Book book,
+                          @ModelAttribute("bookDTO") Book bookDTO,
+                          Model model) {
+        String name = book.getBookName();
+        List<Book> bookList = bookService.findByBookNameStartingWith(name);
+
+        model.addAttribute("found", "true");
+        if (bookList.size() == 0) {
+
+        } else {
+            model.addAttribute("foundNot", "true");
+            List<BookDTO> bookDTOLists = bookDTOList.getBookDTOList(bookList);
+            model.addAttribute("bookDTOList", bookDTOLists);
+        }
+        return "book/search";
     }
 
     @GetMapping("/{id}")
