@@ -11,6 +11,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import javax.xml.crypto.Data;
+import java.util.Date;
 
 /**
  * @author Serhii Klunniy
@@ -47,9 +49,15 @@ public class Book {
     @Column(name = "year")
     int year;
 
+    @Column(name = "take_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    Date takeAt;
+
+    @Transient
+    String overdue;
+
     public Book() {
     }
-
 
     public Book(String name, String author, int year) {
         this.bookName = name;
@@ -70,6 +78,14 @@ public class Book {
         this.bookName = bookName;
         this.author = author;
         this.year = year;
+    }
+
+    public String getOverdue() {
+        return overdue;
+    }
+
+    public void setOverdue(String overdue) {
+        this.overdue = overdue;
     }
 
     public Integer getBookId() {
@@ -110,6 +126,14 @@ public class Book {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public Date getTakeAt() {
+        return takeAt;
+    }
+
+    public void setTakeAt(Date takeAt) {
+        this.takeAt = takeAt;
     }
 
 }

@@ -61,9 +61,10 @@ public class PeopleController {
         Person person = peopleService.findOne(id);
         model.addAttribute("person", person);
 
-        List<Book> listBookForPerson = bookService.findAllByOwner(person);
+        List<Book> listBookForPerson = bookService.findAllBooksByPerson(person);
         person.setBookList(listBookForPerson);
 
+//todo: нужна ли эта проверка?
         if (!listBookForPerson.isEmpty())
             model.addAttribute("list_book", listBookForPerson);
 

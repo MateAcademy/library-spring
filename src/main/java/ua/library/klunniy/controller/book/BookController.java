@@ -99,7 +99,7 @@ public class BookController {
     public String dellAdmin(@PathVariable(value = "id", required = false) int id) {
         Book book = bookService.findOne(id);
         book.setOwner(null);
-        bookService.update(id, book);
+        bookService.releaseTheBookFromTheAuthor(id, book);
         return "redirect:/books/{id}";
     }
 
@@ -108,7 +108,7 @@ public class BookController {
             required = false) int id) {
         Book book = bookService.findOne(id);
         book.setOwner(person);
-        bookService.update(id, book);
+        bookService.assignBookToAnAuthor(id, book);
         return "redirect:/books/{id}";
     }
 
@@ -125,7 +125,7 @@ public class BookController {
         if (bindingResult.hasErrors()) {
             return "book/edit";
         }
-        bookService.update(id, book);
+        bookService.assignBookToAnAuthor(id, book);
         return "redirect:/books";
     }
 

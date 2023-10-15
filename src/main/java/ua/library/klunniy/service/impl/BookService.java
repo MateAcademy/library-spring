@@ -9,8 +9,10 @@ import ua.library.klunniy.model.Person;
 import ua.library.klunniy.repositories.BookRepository;
 import ua.library.klunniy.model.Book;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Serhii Klunniy
@@ -68,8 +70,16 @@ public class BookService {
     }
 
     @Transactional
-    public void update(int id, Book updateBook) {
+    public void releaseTheBookFromTheAuthor(int id, Book updateBook) {
         updateBook.setBookId(id);
+        updateBook.setTakeAt(null);
+        bookRepository.save(updateBook);
+    }
+
+    @Transactional
+    public void assignBookToAnAuthor(int id, Book updateBook) {
+        updateBook.setBookId(id);
+        updateBook.setTakeAt(new Date());
         bookRepository.save(updateBook);
     }
 
@@ -78,8 +88,31 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
-    public List<Book> findAllByOwner(Person person) {
-        return bookRepository.findAllByOwner(person);
+    public List<Book> findAllBooksByPerson(Person person) {
+        List<Book> allBooksByPerson = bookRepository.findAllByOwner(person);
+        for (Book book : allBooksByPerson) {
+            Date date = book.getTakeAt();
+            book.setOverdue(overdue(date));
+        }
+        return allBooksByPerson;
+    }
+
+    private String overdue(Date date) {
+        if (date == null) {
+            return "Y";
+        }
+
+        long diff = Math.abs(System.currentTimeMillis() - date.getTime());
+        long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
+        System.out.println("Days: " + days);
+        if (days >= 10) {
+            System.out.println("Прошло больше 10 дней");
+            return "Y";
+        } else {
+            System.out.println("Прошло меньше 10 дней");
+            return null;
+        }
     }
 
 }
